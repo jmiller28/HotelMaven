@@ -1,8 +1,6 @@
 package edu.wctc.controllers;
 
 import edu.wctc.entities.Hotel;
-import edu.wctc.models.DB_MySql;
-import edu.wctc.models.HotelDAO;
 import edu.wctc.models.HotelService;
 import java.io.IOException;
 import java.util.List;
@@ -45,23 +43,21 @@ public class HotelController extends HttpServlet {
             throws ServletException, IOException, Exception {
 
         response.setContentType("text/html;charset=UTF-8");
-        
-//        ServletContext ctx = request.getServletContext();
-//        String className = ctx.getInitParameter("hotelDao");
-//        Class clazz = Class.forName(className);
-//        HotelDAO dao = (HotelDAO)clazz.newInstance();
-//
-//        className = ctx.getInitParameter("hotelDb");
-//        clazz = Class.forName(className);
-//        DB_MySql db = (DB_MySql)clazz.newInstance();
-//        
-//        String driver = ctx.getInitParameter("driverClassName");
-//        String url = ctx.getInitParameter("url");
-//        String username = ctx.getInitParameter("username");
-//        String password = ctx.getInitParameter("password");
 
+        ServletContext ctx = request.getServletContext();
+        String driverClassName = ctx.getInitParameter("driverClassName");
+        String url = ctx.getInitParameter("url");
+        String username = ctx.getInitParameter("username");
+        String password = ctx.getInitParameter("password");
+        String hotelDao = ctx.getInitParameter("hotelDao");
+        String hotelDb = ctx.getInitParameter("hotelDb");
+
+        HotelService hs = null;
+        hs = new HotelService(driverClassName, url, username, password, 
+                hotelDao, hotelDb);
+        
         Hotel hotel = new Hotel();
-        HotelService hs = new HotelService();;
+        
         List<Hotel> hotels = null;
         String addForm = null;
         String editForm = null;

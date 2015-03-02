@@ -10,22 +10,22 @@ import java.util.Map;
  */
 public interface IDB_MySql {
 
-    void openConnection(String driverClassName, String url, String username, 
-            String password) throws ClassNotFoundException, SQLException;
+    void openConnection() throws ClassNotFoundException, SQLException;
     
     List<Map<String, Object>> getAllRecords(String tableName) 
-            throws SQLException;
+            throws SQLException, ClassNotFoundException;
     
     Map getRecordById(String tableName, String primaryKeyField, Object keyValue) 
-            throws SQLException;
+            throws SQLException, ClassNotFoundException;
     
     int deleteRecord(String tableName, String whereField, Object whereValue) 
-            throws SQLException;
+            throws SQLException, ClassNotFoundException;
     
     int updateRecord(String tableName, List colDescriptors, List colValues, 
-            String whereField, Object whereValue)throws SQLException;
+            String whereField, Object whereValue)throws SQLException, 
+            ClassNotFoundException;
     
     int insertNewRecord(String tableName, List colDescriptors, List colValues) 
-            throws SQLException ;
+            throws SQLException, ClassNotFoundException ;
     
 }

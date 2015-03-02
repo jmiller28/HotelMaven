@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,19 +26,31 @@ public class DB_MySql implements IDB_MySql {
     private ResultSet rs;
     private PreparedStatement pstmt;
     private ResultSetMetaData metaData;
+    private String driverClassName;
+    private String url;
+    private String username;
+    private String password;
+
+    public DB_MySql(String driverClassName, String url, String username,
+            String password) {
+        this.driverClassName = driverClassName;
+        this.url = url;
+        this.username = username;
+        this.password = password;
+    }
 
     @Override
-    public final void openConnection(String driverClassName, String url,
-            String username, String password) throws ClassNotFoundException,
+    public final void openConnection() throws ClassNotFoundException,
             SQLException {
         Class.forName(driverClassName);
         conn = DriverManager.getConnection(url, username, password);
     }
-    
+
     @Override
     public final List<Map<String, Object>> getAllRecords(String tableName)
-            throws SQLException {
-
+            throws SQLException, ClassNotFoundException {
+        
+        openConnection();
         List<Map<String, Object>> records = new ArrayList<>();
         String sql = "select * from " + tableName;
 
@@ -68,8 +82,9 @@ public class DB_MySql implements IDB_MySql {
 
     @Override
     public final Map getRecordById(String tableName, String primaryKeyField,
-            Object keyValue) throws SQLException {
+            Object keyValue) throws SQLException, ClassNotFoundException {
 
+        openConnection();
         final Map record = new HashMap();
         try {
             stmt = conn.createStatement();
@@ -106,10 +121,10 @@ public class DB_MySql implements IDB_MySql {
 
     @Override
     public final int deleteRecord(String tableName, String whereField,
-            Object whereValue) throws SQLException {
+            Object whereValue) throws SQLException, ClassNotFoundException {
 
         int recordsDeleted = 0;
-
+        openConnection();
         try {
             pstmt = buildDeleteStatement(conn, tableName, whereField);
 
@@ -165,11 +180,12 @@ public class DB_MySql implements IDB_MySql {
     }
 
     @Override
-    public final int updateRecord(String tableName, List colDescriptors, 
+    public final int updateRecord(String tableName, List colDescriptors,
             List colValues, String whereField, Object whereValue)
-            throws SQLException {
+            throws SQLException, ClassNotFoundException{
 
         int recordsUpdated = 0;
+        openConnection();
         try {
             pstmt = buildUpdateStatement(conn, tableName, colDescriptors,
                     whereField);
@@ -249,10 +265,10 @@ public class DB_MySql implements IDB_MySql {
 
     @Override
     public final int insertNewRecord(String tableName, List colDescriptors,
-            List colValues) throws SQLException {
+            List colValues) throws SQLException, ClassNotFoundException {
 
         int recordsInserted = 0;
-
+        openConnection();
         try {
             pstmt = buildInsertStatement(conn, tableName, colDescriptors);
 

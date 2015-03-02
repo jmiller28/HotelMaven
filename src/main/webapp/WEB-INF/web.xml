@@ -27,11 +27,11 @@
         <param-value>admin</param-value>
     </context-param><context-param>      
         <param-name>hotelDao</param-name>             
-        <param-value>hotel.web.model.HotelDAO</param-value>             
+        <param-value>edu.wctc.models.HotelDAO</param-value>             
     </context-param> 
     <context-param>    
         <param-name>hotelDb</param-name>               
-        <param-value>hotel.web.model.DB_MySql</param-value>             
+        <param-value>edu.wctc.models.DB_MySql</param-value>             
     </context-param>
     
 </web-app>
